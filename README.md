@@ -8,4 +8,5 @@ _Deep learning research in biology and chemistry._
 
 ## TODO
 - Matrix factorizations
+- tSNE Algorithm
 - Higher dimensional matrix multiplication
