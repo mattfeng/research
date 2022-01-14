@@ -39,23 +39,23 @@
 - [ ] Transformers
 - [ ] Variational Autoencoders
 
-## Day 1 (Jan 1, 2021)
+## Day 1 (Jan 1, 2022)
 
-## Day 2 (Jan 2, 2021)
+## Day 2 (Jan 2, 2022)
 - set up `compute` machine
 
-## Day 3 (Jan 3, 2021)
+## Day 3 (Jan 3, 2022)
 - found resources related to Graph Neural Networks, in particular the Stanford CS224W class.
 
-## Day 4 (Jan 4, 2021)
+## Day 4 (Jan 4, 2022)
 
-## Day 5 (Jan 5, 2021)
+## Day 5 (Jan 5, 2022)
 
-## Day 6 (Jan 6, 2021)
+## Day 6 (Jan 6, 2022)
 
-## Day 7 (Jan 7, 2021)
+## Day 7 (Jan 7, 2022)
 
-## Day 8 (Jan 8, 2021)
+## Day 8 (Jan 8, 2022)
 - examined triangle attention in AlphaFold to understand how the triangle inequality is enforced
     - soft constraint
 - FAPE penalizes incorrect chirality
@@ -65,3 +65,19 @@
     - $\frac{Q\tr{K}}{\sqrt{d_k}} V$
 - Layer normalization
 - CS224W, introduction to PyTorch Geometric
+
+## Day 10 (Jan 10, 2022)
+
+## Day 11 (Jan 10, 2022)
+- Start work on ML4MolEng
+
+## Day 14 (Jan 14, 2022)
+- Adam optimizer sometimes causes the loss to have a massive jump (see `lemon-sky-7`), and thus I added a clipping norm.
+    - `torch.nn.utils.clip_grad_norm_(model.parameters(), clipping_norm)`
+- Continue to examine reasons for [spikes in Adam training](https://stats.stackexchange.com/questions/303857/explanation-of-spikes-in-training-loss-vs-iterations-with-adam-optimizer).
+
+![Lemon Sky 7](./jan14/lemon-sky-7.png)
+
+![Generous Aardvark 8](./jan14/generous-aardvark-8.png)
+
+![Real vs. predicted on test set, generous-aardvark.](jan14/generous-aardvark-8-test-graph.png)
