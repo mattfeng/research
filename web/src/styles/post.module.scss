@@ -16,4 +16,8 @@
 .contentContainer {
     width: min(80%, 80ch);
     margin: auto;
+
+    p {
+        line-height: 1.3;
+    }
 }

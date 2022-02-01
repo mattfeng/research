@@ -1,5 +1,44 @@
 # GNNs almost from scratch
 
+## Collating (batching) graphs
+
+```python
+def collate_graphs(batch):
+    """
+    Batch multiple graphs into one batched graph.
+    
+    Args:
+        batch (tuple): tuples of AtomicNum, Edge, Natom and y obtained from
+            GraphDataset.__getitem__() 
+        
+    Return 
+        (tuple): Batched AtomicNum, Edge, Natom, y
+    """
+    
+    AtomicNum_batch = []
+    Edge_batch = []
+    Natom_batch = []
+    y_batch = []
+
+    cumulative_atoms = np.cumsum([0] + [b[2] for b in batch])[:-1]
+    
+    for i in range(len(batch)):
+        z, a, N, y = batch[i]
+        index_shift = cumulative_atoms[i]
+        a = a + index_shift
+        AtomicNum_batch.append(z) 
+        Edge_batch.append(a)
+        Natom_batch.append(N)
+        y_batch.append(y)
+        
+    AtomicNum_batch = torch.cat(AtomicNum_batch)
+    Edge_batch = torch.cat(Edge_batch, dim=1)
+    Natom_batch = Natom_batch # i.e. no changes made
+    y_batch = torch.cat(y_batch)
+    
+    return AtomicNum_batch, Edge_batch, Natom_batch, y_batch 
+```
+
 ## Scatter add
 The main function driving fast implementations of graph neural networks is `scatter_add`.
 
