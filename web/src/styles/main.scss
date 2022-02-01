@@ -1,0 +1,14 @@
+@import "fonts.scss";
+
+body {
+    font-size: 14px;
+}
+
+deckgo-highlight-code {
+    --deckgo-highlight-code-carbon-box-shadow: 0 0 0px;
+    --deckgo-highlight-code-carbon-toolbar-display: none;
+    --deckgo-highlight-code-token-comment: rgb(100, 112, 112);
+    font-family: $mono;
+    --deckgo-highlight-code-carbon-overflow: scroll;
+    --deckgo-highlight-code-white-space: pre;
+}

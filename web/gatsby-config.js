@@ -43,9 +43,22 @@ module.exports = {
           },
           `gatsby-remark-copy-linked-files`,
           {
+            resolve: `gatsby-remark-table-of-contents`,
+            options: {
+              exclude: "Table of Contents",
+              tight: false,
+              ordered: false,
+              fromHeading: 1,
+              toHeading: 6,
+              className: "table-of-contents"
+            },
+          },
+          `gatsby-remark-autolink-headers`,
+          {
             resolve: `gatsby-remark-highlight-code`,
             options: {
-              theme: `solarized-light`,
+              theme: `nord`,
+              lineNumbers: true
             },
           },
         ],

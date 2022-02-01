@@ -14,9 +14,11 @@ const Layout = ({ data }) => {
   const post = data.mdx
   return (
     <div className={styles.mainContainer}>
-      <MDXProvider components={shortcodes}>
-        <MDXRenderer>{post.body}</MDXRenderer>
-      </MDXProvider>
+      <div className={styles.contentContainer}>
+        <MDXProvider components={shortcodes}>
+          <MDXRenderer>{post.body}</MDXRenderer>
+        </MDXProvider>
+      </div>
     </div>
   )
 }

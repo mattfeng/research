@@ -2,3 +2,101 @@
 
 ## Scatter add
 The main function driving fast implementations of graph neural networks is `scatter_add`.
+
+```python
+def scatter_add(src, index, dim_size, dim=-1, fill_value=0):
+    """
+    Sums all values from the src tensor into out at the indices specified in the index 
+    tensor along a given axis dim. 
+    """
+    
+    # make index the same shape as src
+    # this will make `scatter_add_` add vectors from `src` to `out`
+    index_size = list(repeat(1, src.dim()))
+    index_size[dim] = src.size(dim)
+    index = index.view(index_size).expand_as(src)
+    
+    # create the shape of the out vector
+    # out will have shape src.size() but with `dim` changed to dim_size
+    # e.g.
+    #    - src contains 1 row vector for each edge,
+    #    - out's rows should have the same dim as those vectors,
+    #      but the number of rows should be the number of nodes,
+    #      not the number of edges
+    dim = range(src.dim())[dim] # convert -1 to actual dim number
+    out_size = list(src.size())
+    out_size[dim] = dim_size
+
+    out = src.new_full(out_size, fill_value)
+
+    return out.scatter_add_(dim, index, src)
+```
+
+### Graph Neural Network PyTorch module
+
+```python
+rom torch import nn
+from torch.nn import ModuleDict
+
+class GNN(nn.Module):
+    """
+    A GNN model.
+    """
+    def __init__(self, n_convs=3, n_embed=64):
+        super(GNN, self).__init__()
+        
+        self.atom_embed = nn.Embedding(100, n_embed)
+
+        # declare MLPs (linear layers) in a ModuleList
+        self.convolutions = nn.ModuleList([ 
+                ModuleDict({
+                    "update_mlp": nn.Sequential(
+                        nn.Linear(n_embed, n_embed), 
+                        nn.ReLU(), 
+                        nn.Linear(n_embed, n_embed)
+                        ),
+                    "message_mlp": nn.Sequential(
+                        nn.Linear(n_embed, n_embed), 
+                        nn.ReLU(), 
+                        nn.Linear(n_embed, n_embed)
+                        ) 
+                })
+                for _ in range(n_convs)
+            ])
+        # Declare readout layers
+        self.readout = nn.Sequential(
+            nn.Linear(n_embed, n_embed),
+            nn.ReLU(),
+            nn.Linear(n_embed, 1)
+            )
+        
+    def forward(self, atomic_num, edge, Natom):
+        # - take atomic numbers and convert into their "word embeddings"
+        # - these word embeddings will be modified during training
+        h = self.atom_embed(atomic_num)       # shape=(Natom, n_embed)
+        
+        for conv in self.convolutions:
+            prod = h[edge[0]] * h[edge[1]]    # shape=(Nedge, n_embed)
+            msgs = conv["message_mlp"](prod)  # shape=(Nedge, n_embed)
+
+            # - send the messages to nodes, undirected graph
+            # - sum(Natom) is needed because we collated the graph
+            agg_msg = scatter_add(src=msgs, index=edge[1], dim=0, dim_size=sum(Natom)) + \
+                      scatter_add(src=msgs, index=edge[0], dim=0, dim_size=sum(Natom))
+            
+            # - transform the message using UpdateMLP, and add as a
+            #   residual connection
+            h += conv["update_mlp"](agg_msg)
+        
+        readout = self.readout(h)
+
+        # - split readout to get the readout for each individual graph
+        #   in the batch
+        readout_split = torch.split(readout, Natom)
+        output = torch.stack(
+            [split.sum(0) for split in readout_split],
+            dim=0
+            ).squeeze()
+        
+        return output
+```
