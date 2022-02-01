@@ -1,0 +1,14 @@
+@import "fonts.scss";
+
+.mainContainer {
+    font-family: $sans;
+
+    code {
+        font-family: $mono;
+        color: rgb(90, 90, 90);
+        background-color: rgb(250, 250, 250);
+        border: 1px solid rgb(240, 240, 240);
+        border-radius: 3px;
+        padding: 1px;
+    }
+}
