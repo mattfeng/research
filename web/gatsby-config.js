@@ -75,7 +75,7 @@ module.exports = {
             require(`rehype-katex`),
             {
               macros: {
-                "\\tr": "{#1}^\\mathsf{T}",
+                "\\tr": "#1^\\mathsf{T}",
               },
             },
           ],

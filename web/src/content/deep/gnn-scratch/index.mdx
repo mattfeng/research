@@ -99,6 +99,12 @@ def scatter_add(src, index, dim_size, dim=-1, fill_value=0):
     return out.scatter_add_(dim, index, src)
 ```
 
+After $T$ steps of convolution, 
+
+$$
+y = \sum_{i \in \{1, 2, ..., |V|\}} \textbf{ReadoutMLP}(\tr{h_i})
+$$
+
 ### Graph Neural Network PyTorch module
 
 ```python
