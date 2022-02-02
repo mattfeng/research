@@ -1,8 +1,28 @@
 # GNNs almost from scratch
 
+## The theory of graph neural networks
+
+The message delivered to node $i$ on convolution layer $t$ is constructed by:
+1. $j \in N(i)$
+    - generating a submessage from every node $j$ that is a neighbor of $i$, where
+2. $\textbf{MessageMLP}^t$
+    - that submessage is a transformation of
+3. $h_i^t \cdot h_j^t$
+    - the element-wise multiplication of the two node embeddings (embeddings of nodes $i$ and $j$), and
+4. $\sum$
+    - summing over all those individual submessages.
+
+$$
+m_i^t = \sum_{j \in N(i)} \textbf{MessageMLP}^t(h_i^t \cdot h_j^t)
+$$
+
+$$
+h_i^t = h_i^{t - 1} + \textbf{UpdateMLP}^t(m_i^t)
+$$
+
 ## Collating (batching) graphs
 
-Because graphs can be of different sizes (different numbers of nodes and edges), we cannot batch graphs the traditional way by stacking them in a list. Instead, we batch the graphs by **constructing a single, large graph** consisting of disjoint subgraphs within it.
+Because graphs can be of different sizes (varying numbers of nodes and edges), we cannot batch graphs the traditional way by stacking them in a list. Instead, we batch the graphs by **constructing a single, large graph** consisting of disjoint subgraphs within it.
 
 ```python
 def collate_graphs(batch):
@@ -44,19 +64,7 @@ def collate_graphs(batch):
 ## Scatter add
 The main function driving fast implementations of graph neural networks is `scatter_add`.
 
-GNNs operate in two steps: a **message step** and an **update step**. As a preview, the message generation equation and update equation are show below; they will be explained in detail below. 
-
-$$
-m_i^t = \sum_{j \in N(i)} \textbf{MessageMLP}^t(h_i^t \cdot h_j^t)
-$$
-
-$$
-h_i^t = h_i^{t - 1} + \textbf{UpdateMLP}^t(m_i^t)
-$$
-
 ### The _message_ step
-
-Intuitively, 
 
 $$
 m_i^t = \sum_{j \in N(i)} \textbf{MessageMLP}^t(h_i^t \cdot h_j^t)
@@ -99,11 +107,15 @@ def scatter_add(src, index, dim_size, dim=-1, fill_value=0):
     return out.scatter_add_(dim, index, src)
 ```
 
+#### The _readout_ step
+
 After $T$ steps of convolution, 
 
 $$
 y = \sum_{i \in \{1, 2, ..., |V|\}} \textbf{ReadoutMLP}(\tr{h_i})
 $$
+
+The _readout_ step will give us a single value for our graph. Because we batched our graph, we need to split up the batch back into its disjoint subgraphs so that we can get an output value $y$ for each graph.
 
 ### Graph Neural Network PyTorch module
 
