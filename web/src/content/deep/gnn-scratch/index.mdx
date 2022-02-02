@@ -22,7 +22,7 @@ $$
 
 ## Collating (batching) graphs
 
-Because graphs can be of different sizes (varying numbers of nodes and edges), we cannot batch graphs the traditional way by stacking them in a list. Instead, we batch the graphs by **constructing a single, large graph** consisting of disjoint subgraphs within it.
+Because graphs can be of different sizes (varying numbers of nodes and edges), we cannot batch graphs the way we batch most other kinds of data by simply `vstack`ing them into a list. Instead, we batch the graphs by **constructing a single, large graph** consisting of disjoint subgraphs within it.
 
 ```python
 def collate_graphs(batch):
@@ -120,7 +120,7 @@ The _readout_ step will give us a single value for our graph. Because we batched
 ### Graph Neural Network PyTorch module
 
 ```python
-rom torch import nn
+from torch import nn
 from torch.nn import ModuleDict
 
 class GNN(nn.Module):
