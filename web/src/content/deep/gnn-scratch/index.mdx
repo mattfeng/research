@@ -2,6 +2,8 @@
 
 ## Collating (batching) graphs
 
+Because graphs can be of different sizes (different numbers of nodes and edges), we cannot batch graphs the traditional way by stacking them in a list. Instead, we batch the graphs by **constructing a single, large graph** consisting of disjoint subgraphs within it.
+
 ```python
 def collate_graphs(batch):
     """
@@ -41,6 +43,32 @@ def collate_graphs(batch):
 
 ## Scatter add
 The main function driving fast implementations of graph neural networks is `scatter_add`.
+
+GNNs operate in two steps: a **message step** and an **update step**. As a preview, the message generation equation and update equation are show below; they will be explained in detail below. 
+
+$$
+m_i^t = \sum_{j \in N(i)} \textbf{MessageMLP}^t(h_i^t \cdot h_j^t)
+$$
+
+$$
+h_i^t = h_i^{t - 1} + \textbf{UpdateMLP}^t(m_i^t)
+$$
+
+### The _message_ step
+
+Intuitively, 
+
+$$
+m_i^t = \sum_{j \in N(i)} \textbf{MessageMLP}^t(h_i^t \cdot h_j^t)
+$$
+
+### The _update_ step
+
+$$
+h_i^t = h_i^{t - 1} + \textbf{UpdateMLP}^t(m_i^t)
+$$
+
+
 
 ```python
 def scatter_add(src, index, dim_size, dim=-1, fill_value=0):
