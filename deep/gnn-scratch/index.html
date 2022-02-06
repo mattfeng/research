@@ -48,4 +48,131 @@
         }
       }
     })
-  </script><link as="script" rel="preload" href="/research/webpack-runtime-28b42cfa72ca2807a615.js"/><link as="script" rel="preload" href="/research/framework-6bdc9aaa9caa3de6408b.js"/><link as="script" rel="preload" href="/research/app-1c22ab208e65e6027d88.js"/><link as="script" rel="preload" href="/research/component---src-pages-index-js-4fe04c84d62da544f508.js"/><link as="fetch" rel="preload" href="/research/page-data/index/page-data.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/research/page-data/app-data.json" crossorigin="anonymous"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><h1>Research</h1></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-635a9dfd597478a1f0fa.js"],"app":["/app-1c22ab208e65e6027d88.js"],"component---src-pages-404-js":["/component---src-pages-404-js-125fdaffb8590456d3ac.js"],"component---src-pages-index-js":["/component---src-pages-index-js-4fe04c84d62da544f508.js"],"component---src-templates-post-js":["/component---src-templates-post-js-c64d1e9611ccbe2530d5.js"]};/*]]>*/</script><script src="/research/polyfill-635a9dfd597478a1f0fa.js" nomodule=""></script><script src="/research/component---src-pages-index-js-4fe04c84d62da544f508.js" async=""></script><script src="/research/app-1c22ab208e65e6027d88.js" async=""></script><script src="/research/framework-6bdc9aaa9caa3de6408b.js" async=""></script><script src="/research/webpack-runtime-28b42cfa72ca2807a615.js" async=""></script></body></html>
+  </script><link as="script" rel="preload" href="/research/webpack-runtime-28b42cfa72ca2807a615.js"/><link as="script" rel="preload" href="/research/framework-6bdc9aaa9caa3de6408b.js"/><link as="script" rel="preload" href="/research/app-1c22ab208e65e6027d88.js"/><link as="script" rel="preload" href="/research/component---src-templates-post-js-c64d1e9611ccbe2530d5.js"/><link as="fetch" rel="preload" href="/research/page-data/deep/gnn-scratch/page-data.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/research/page-data/app-data.json" crossorigin="anonymous"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><div class="post-module--mainContainer--hgf7u"><div class="post-module--contentContainer--j14Jm"><h1 id="gnns-almost-from-scratch" style="position:relative"><a href="#gnns-almost-from-scratch" aria-label="gnns almost from scratch permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GNNs almost from scratch</h1><h2 id="collating-batching-graphs" style="position:relative"><a href="#collating-batching-graphs" aria-label="collating batching graphs permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Collating (batching) graphs</h2><deckgo-highlight-code language="python" theme="nord" line-numbers="true">
+          <code slot="code">def collate_graphs(batch):
+    &quot;&quot;&quot;
+    Batch multiple graphs into one batched graph.
+    
+    Args:
+        batch (tuple): tuples of AtomicNum, Edge, Natom and y obtained from
+            GraphDataset.__getitem__() 
+        
+    Return 
+        (tuple): Batched AtomicNum, Edge, Natom, y
+    &quot;&quot;&quot;
+    
+    AtomicNum_batch = []
+    Edge_batch = []
+    Natom_batch = []
+    y_batch = []
+
+    cumulative_atoms = np.cumsum([0] + [b[2] for b in batch])[:-1]
+    
+    for i in range(len(batch)):
+        z, a, N, y = batch[i]
+        index_shift = cumulative_atoms[i]
+        a = a + index_shift
+        AtomicNum_batch.append(z) 
+        Edge_batch.append(a)
+        Natom_batch.append(N)
+        y_batch.append(y)
+        
+    AtomicNum_batch = torch.cat(AtomicNum_batch)
+    Edge_batch = torch.cat(Edge_batch, dim=1)
+    Natom_batch = Natom_batch # i.e. no changes made
+    y_batch = torch.cat(y_batch)
+    
+    return AtomicNum_batch, Edge_batch, Natom_batch, y_batch </code>
+        </deckgo-highlight-code><h2 id="scatter-add" style="position:relative"><a href="#scatter-add" aria-label="scatter add permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Scatter add</h2><p>The main function driving fast implementations of graph neural networks is <code>scatter_add</code>.</p><deckgo-highlight-code language="python" theme="nord" line-numbers="true">
+          <code slot="code">def scatter_add(src, index, dim_size, dim=-1, fill_value=0):
+    &quot;&quot;&quot;
+    Sums all values from the src tensor into out at the indices specified in the index 
+    tensor along a given axis dim. 
+    &quot;&quot;&quot;
+    
+    # make index the same shape as src
+    # this will make `scatter_add_` add vectors from `src` to `out`
+    index_size = list(repeat(1, src.dim()))
+    index_size[dim] = src.size(dim)
+    index = index.view(index_size).expand_as(src)
+    
+    # create the shape of the out vector
+    # out will have shape src.size() but with `dim` changed to dim_size
+    # e.g.
+    #    - src contains 1 row vector for each edge,
+    #    - out&#x27;s rows should have the same dim as those vectors,
+    #      but the number of rows should be the number of nodes,
+    #      not the number of edges
+    dim = range(src.dim())[dim] # convert -1 to actual dim number
+    out_size = list(src.size())
+    out_size[dim] = dim_size
+
+    out = src.new_full(out_size, fill_value)
+
+    return out.scatter_add_(dim, index, src)</code>
+        </deckgo-highlight-code><h3 id="graph-neural-network-pytorch-module" style="position:relative"><a href="#graph-neural-network-pytorch-module" aria-label="graph neural network pytorch module permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Graph Neural Network PyTorch module</h3><deckgo-highlight-code language="python" theme="nord" line-numbers="true">
+          <code slot="code">rom torch import nn
+from torch.nn import ModuleDict
+
+class GNN(nn.Module):
+    &quot;&quot;&quot;
+    A GNN model.
+    &quot;&quot;&quot;
+    def __init__(self, n_convs=3, n_embed=64):
+        super(GNN, self).__init__()
+        
+        self.atom_embed = nn.Embedding(100, n_embed)
+
+        # declare MLPs (linear layers) in a ModuleList
+        self.convolutions = nn.ModuleList([ 
+                ModuleDict({
+                    &quot;update_mlp&quot;: nn.Sequential(
+                        nn.Linear(n_embed, n_embed), 
+                        nn.ReLU(), 
+                        nn.Linear(n_embed, n_embed)
+                        ),
+                    &quot;message_mlp&quot;: nn.Sequential(
+                        nn.Linear(n_embed, n_embed), 
+                        nn.ReLU(), 
+                        nn.Linear(n_embed, n_embed)
+                        ) 
+                })
+                for _ in range(n_convs)
+            ])
+        # Declare readout layers
+        self.readout = nn.Sequential(
+            nn.Linear(n_embed, n_embed),
+            nn.ReLU(),
+            nn.Linear(n_embed, 1)
+            )
+        
+    def forward(self, atomic_num, edge, Natom):
+        # - take atomic numbers and convert into their &quot;word embeddings&quot;
+        # - these word embeddings will be modified during training
+        h = self.atom_embed(atomic_num)       # shape=(Natom, n_embed)
+        
+        for conv in self.convolutions:
+            prod = h[edge[0]] * h[edge[1]]    # shape=(Nedge, n_embed)
+            msgs = conv[&quot;message_mlp&quot;](prod)  # shape=(Nedge, n_embed)
+
+            # - send the messages to nodes, undirected graph
+            # - sum(Natom) is needed because we collated the graph
+            agg_msg = scatter_add(src=msgs, index=edge[1], dim=0, dim_size=sum(Natom)) + \
+                      scatter_add(src=msgs, index=edge[0], dim=0, dim_size=sum(Natom))
+            
+            # - transform the message using UpdateMLP, and add as a
+            #   residual connection
+            h += conv[&quot;update_mlp&quot;](agg_msg)
+        
+        readout = self.readout(h)
+
+        # - split readout to get the readout for each individual graph
+        #   in the batch
+        readout_split = torch.split(readout, Natom)
+        output = torch.stack(
+            [split.sum(0) for split in readout_split],
+            dim=0
+            ).squeeze()
+        
+        return output</code>
+        </deckgo-highlight-code></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/deep/gnn-scratch/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-635a9dfd597478a1f0fa.js"],"app":["/app-1c22ab208e65e6027d88.js"],"component---src-pages-404-js":["/component---src-pages-404-js-125fdaffb8590456d3ac.js"],"component---src-pages-index-js":["/component---src-pages-index-js-4fe04c84d62da544f508.js"],"component---src-templates-post-js":["/component---src-templates-post-js-c64d1e9611ccbe2530d5.js"]};/*]]>*/</script><script src="/research/polyfill-635a9dfd597478a1f0fa.js" nomodule=""></script><script src="/research/component---src-templates-post-js-c64d1e9611ccbe2530d5.js" async=""></script><script src="/research/app-1c22ab208e65e6027d88.js" async=""></script><script src="/research/framework-6bdc9aaa9caa3de6408b.js" async=""></script><script src="/research/webpack-runtime-28b42cfa72ca2807a615.js" async=""></script></body></html>
