@@ -41,6 +41,7 @@ module.exports = {
                 `flex:${_.round(fluidResult.aspectRatio, 2)};`,
             },
           },
+          `gatsby-remark-numbered-footnotes`,
           `gatsby-remark-copy-linked-files`,
           {
             resolve: `gatsby-remark-table-of-contents`,
@@ -50,7 +51,7 @@ module.exports = {
               ordered: false,
               fromHeading: 1,
               toHeading: 6,
-              className: "table-of-contents"
+              className: "table-of-contents",
             },
           },
           `gatsby-remark-autolink-headers`,
@@ -58,7 +59,7 @@ module.exports = {
             resolve: `gatsby-remark-highlight-code`,
             options: {
               theme: `nord`,
-              lineNumbers: true
+              lineNumbers: true,
             },
           },
         ],
