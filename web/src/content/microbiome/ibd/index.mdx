@@ -1,9 +1,39 @@
-# Multiomics of the gut microbial ecosystem in inflammatory bowel diseases
+# Inflammatory bowel disease research
 
-- Crohn's disease (CD): gastrointestinal tract
-- Ulcerative colitis (UC): colon
+## TODO
+- multiomics paper
+  - figure out unknown metabolites driving diagnosis separation
+  - how is the metabolome determined experimentally?
+  - mixed-effects model
+  - **strain-level profiling of implicated microorganisms**
 
-## Dataset
+## Abbrevations
+- **ASCA**. anti-_Saccharomyces cerevisiae_ antibodies
+- **ANCA**. anti-neutrophil cytoplasm antibodies
+- **OmpC**. outer membrane protein C
+- **CBir1**. flagellin
+- **alpha diversity**. the mean diversity of species in different sites or habitats within a local scale
+- **KO**. KEGG Orthologues
+- **KEGG**. Kyoto Encyclopedia of Genes and Genomes
+- **ordination**. a statistical technique in which data from a larger number of sites or populations are represented as points in a two or three dimensional coordinate frame
+- **Bray-Curtis principal coordinates**.
+- **EC**. Enzyme Commission gene families
+- **LPS**. lipopolysaccharide
+- **GO**. gene ontology
+- **HMO**. human milk oligosaccharides
+
+---
+
+## Multiomics of the gut microbial ecosystem in inflammatory bowel diseases
+
+- Crohn's disease (CD)
+  - inflammation of gastrointestinal tract
+  - small intestine
+- Ulcerative colitis (UC)
+  - inflammation of colon
+  - large intestine
+
+### Dataset
 - HMP2
   - 132 subjects
     - Five academic medical centers
@@ -109,20 +139,101 @@
 - microbial communities may be in higher growth conditions in dysbiotic IBD
 - unclassified _Subdoligranulum_ species was markedly reduced in IBD yet central to functional network of metabolites
 
-## Abbrevations
-- **ASCA**. anti-_Saccharomyces cerevisiae_ antibodies
-- **ANCA**. anti-neutrophil cytoplasm antibodies
-- **OmpC**. outer membrane protein C
-- **CBir1**. flagellin
-- **alpha diversity**. the mean diversity of species in different sites or habitats within a local scale
-- **KO**. KEGG Orthologues
-- **KEGG**. Kyoto Encyclopedia of Genes and Genomes
-- **ordination**. a statistical technique in which data from a larger number of sites or populations are represented as points in a two or three dimensional coordinate frame
-- **Bray-Curtis principal coordinates**.
-- **EC**. Enzyme Commission gene families
+## Variation in microbiome LPS immunogenicity contributes to autoimmunity in humans
 
-## TODO
-- figure out unknown metabolites driving diagnosis separation
-- how is the metabolome determined experimentally?
-- mixed-effects model
-- **strain-level profiling of implicated microorganisms**
+export const BD = () => <span><i>B. dorei</i></span>
+
+export const EC = () => <span><i>E. coli</i></span>
+
+export const AID = () => <span>autoimmune diseases</span>
+
+export const BB = () => <span><i>Bifidobacterium</i></span>
+
+export const B = () => <span><i>Bacteriodes</i></span>
+
+- **hygiene hypothesis**. increasing number of autoimmune diseases can be explained by Δs to early microbial exposure
+- LPS from <BD/>, unlike LPS from <EC/>
+  - inhibits innate immune signaling and endotoxin tolerance
+  - does not decrease incidence of autoimmune diabetes in (non-obese) mice
+  - <BD/> has been associated with T1D pathogenesis
+- hypothesis: without early exposure to certain microbes, the immune system is not educated properly
+
+### Introduction
+- global increase in <AID/>, e.g.
+  - type 1 diabetes (T1D)
+  - multiple sclerosis (MS)
+  - asthma
+  - allergy
+
+### Results
+
+#### Regional trends in the gut microbiota
+- sequenced **V4 region** of 16S rRNA
+- major source of variations
+  - age
+  - country
+- largest differences in **first year of life**, dissipating differences during second and third years
+
+#### Species and strain level microbial dynamics
+- Use `MetaPhlAn` (metagenomic phylogenetic analysis) on metagenomic shotgun sequencing
+- `ConStrains`. a strain haplotyping tool
+- **strain**. a genetic variant; a subtype of a species
+
+#### Differential microbial functions between populations
+- `HUMAnN2`. find genomic functional potential of metagenomic sequences
+- mapped to GO
+- Russians: <BB/> metabolize HMOs
+- Finnish and Estonia: <B /> metabolize HMOs
+- GO analysis revealed abundance Δ in
+  - LPS functions
+  - LPS biosynthetic process
+  - lipid A biosynthetic process
+
+#### Contrasting immunogenicity of LPS subtypes
+
+![Summary of immunogenicity.](./lps-summary.jpg)
+
+- lipid A domain of LPS is resposible for immune signaling through TLR4
+- more acyl chains $\to$ more likely to elicit immune response
+- LPS form <BB /> has 4, 5 chains, while LPS from <EC/> has 6
+- **endotoxin tolerance**. a temporary refractory state due to a repeated immune challenge by LPS
+
+![Structure of endotoxin (aka LPS).](./lps.png)
+
+## Gut microbiome structure and metabolic activity in inflammatory bowel disease
+
+### Abstract
+
+- the gut metabolome (MBX) is the molecular interface between host and microbe
+- untargeted metabolomic and shotgun metagenomic profiling; cross-sectional (not longitudinal)
+  - discovery (_n_ = 155)
+  - validation (_n_ = 65)
+- &gt;8000 measured metabolites
+  - enrichments
+    - sphingolipids
+    - bile acids
+  - depletions
+    - triacylglycerols
+    - tetrapyrroles
+- found classifiers (markers) of IBD status
+
+### Introduction
+- commensal microbes alter metabolites
+  - e.g. microbial tryptophan decarboxylatses
+
+### Methods
+- four LC-MS metabolomics methods
+  1. lipids
+  2. polar metabolites
+  3. free fatty acids
+  4. bile acids
+
+### Results
+#### Broad metabolic shifts in IBD correlate with host inflammation
+- **fecal calprotectin** is a biomarker for severity of inflammation in IBD
+  - control mean concentration: 35 µg/g
+  - CD mean concentration: 130 µg/g
+  - **UC patients have varying levels of inflammation**
+
+#### Metabolite enrichments in IBD vs. control phenotypes
+
