@@ -8,7 +8,31 @@ import * as styles from "../styles/post.module.scss"
 require("katex/dist/katex.min.css")
 deckDeckGoHighlightElement()
 
-const shortcodes = { Link }
+const Image = ({ width, children }) => {
+  if (!width) {
+    width = "400px"
+  }
+
+  const style = {
+    width,
+    margin: "0 auto",
+  }
+
+  console.log(children)
+
+  return (
+    <div className={styles.imageContainer}>
+      <div style={style}>{children[0]}</div>
+      {children.slice(1)}
+    </div>
+  )
+}
+
+const SPACE = () => {
+  return <>&ensp;</>
+}
+
+const shortcodes = { Link, SPACE, Image }
 
 const Layout = ({ data }) => {
   const post = data.mdx

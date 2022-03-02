@@ -12,6 +12,12 @@
         background-color: #2e3440;
         color: #d8dee9;
     }
+
+    a code {
+        text-decoration: underline;
+        text-decoration-color: #d8dee9;
+    }
+
 }
 
 .contentContainer {
@@ -41,5 +47,12 @@
         margin-top: 2em;
         margin-bottom: 2em;
         border: 1px solid #eee;
+    }
+}
+
+.imageContainer {
+    p {
+        text-align: center;
+        color: rgb(150, 150, 150);
     }
 }
