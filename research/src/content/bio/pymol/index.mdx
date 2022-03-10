@@ -1,0 +1,49 @@
+# Pymol
+
+## Useful features
+
+- Turn on sequence view
+
+```
+set seq_view, 1
+```
+
+- Find hydrogen bonds
+
+```
+action -> find -> polar contacts
+  - to any other atom
+  - between chains
+```
+
+- Hide waters
+
+```
+select waters, resn hoh
+hide (waters)
+```
+
+## Techniques
+
+### Protein alignment
+- https://www.youtube.com/watch?v=T0v1Dx6Yb-I
+
+
+### Make and save movie
+
+```python
+set ray_trace_frames=1  # turn on ray tracing (for depth)
+set cache_frames=0      # tell pymol to not save movies in memory
+mclear
+mpng mov                # save movie
+```
+
+```bash
+ffmpeg -f image2 -framerate 30 -i mov%04d.png -vcodec libx264 -crf 22 video.mp4
+```
+
+- `-f image2`. specify input file format (i.e. images)
+- `-i mov%04d.png`. input files with wildcard `%04d` (see C format strings for syntax)
+- `vcodec libx264`.
+- `-crf 22`. **constant rate factor**, a measure of quality; ranges from 4 to 63 (lower value is better quality)
+- `video.mp4`. output file name

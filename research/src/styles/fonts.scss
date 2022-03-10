@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "Studio Feixen Sans";
+    font-weight: 400;
+    font-style: normal;
+    src: url("../fonts/StudioFeixenSans-Regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Studio Feixen Sans";
+    font-weight: 700;
+    font-style: normal;
+    src: url("../fonts/StudioFeixenSans-Bold.woff2") format("woff2");
+}
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+$sans: "Studio Feixen Sans", sans-serif;
+$mono: "IBM Plex Mono", monospace;
+
+$base-size: 16px;
