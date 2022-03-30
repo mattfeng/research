@@ -1,0 +1,33 @@
+# Molecular generation
+
+## Junction Tree Variational Autoencoder (JT-VAE)
+
+### Experiments
+1. Molecular reconstruction and validity.
+2. Bayesian optimization.
+3. Constrained molecular optimization.
+
+#### 1<SPACE/>Molecular reconstruction and validity
+- encoding and decoding is **stochastic** (a flaw in VAEs)
+- **reconstruction**. encode and decode a molecule 10 times, see if the decoded molecule matches the input.
+- **validity**. sample 1000 random latent vectors, decode each 100 times to see if they are valid chemical structures.
+- because of _a priori_ selection of substrucures, JT-VAE is unlikely to generate novel substructures like large rings that do not appear in the training set (could be either a good or a bad thing).
+
+#### 2<SPACE/>Bayesian optimization
+- **goal**: produce molecules with desired properties
+- property to optimize
+  - $y(m) = \log P(m) - SA(m) - \mathrm{cycle}(m)$
+  - $\log P$ penalized by **synthetic accessibility score** and number of long cycles (rings with greater than 6 atoms)
+  - not a very useful property?
+- steps
+  1. train VAE
+  2. train sparse gaussian process (SGP) to predict $y(m)$ from latent representation
+  3. five iterations of batched BO to optimize $y(m)$
+
+#### 3<SPACE/>Constrained molecular optimization
+
+
+## Related resources
+- [Probabilistic graphical models.](https://ermongroup.github.io/cs228-notes/)
+- [Clique trees.](/11-clique-trees.pdf)
+- [Gaussian process.](https://distill.pub/2019/visual-exploration-gaussian-processes/)
