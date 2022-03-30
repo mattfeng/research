@@ -1,6 +1,27 @@
-# AlphaFold 2
+# A Deep Dive into AlphaFold 2
 
-- http://borisburkov.net/2021-12-25-1/
+## Theory
+
+### Graph networks
+- https://arxiv.org/pdf/1806.01261.pdf
+- https://ipam.wistia.com/medias/1zgl4lq6nh
+
+### SE(3)-Transformers
+
+### Universal Transformers
+- https://docs.dgl.ai/en/latest/tutorials/models/4_old_wines/7_transformer.html
+- https://arxiv.org/pdf/1807.03819.pdf
+
+## Practice
+
+### Notes on JAX
+
+
+
+### Code structure
+- `modules.py`. contains all the model architecture definitions used in AlphaFold.
+  - `EmbeddingsAndEvoformer`. Algorithm 2, Lines 5-18
+  - `EvoformerIteration`
 
 ## FAQ
 
@@ -10,3 +31,7 @@
 - It is a _soft constraint_.
 
 - Frame aligned point error
+
+## References
+- http://borisburkov.net/2021-12-25-1/
+- [ColabFold - Making protein folding accessible to all via Google Colab!](https://www.youtube.com/watch?v=Rfw7thgGTwI)
