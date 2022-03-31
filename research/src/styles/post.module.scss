@@ -37,6 +37,16 @@
         color:rgb(90, 90, 90);
     }
 
+    a:hover {
+        background-color:rgb(90, 90, 90);
+        color: white;
+    }
+
+    a:hover code {
+        background-color: #2e3440;
+        color: #d8dee9;
+    }
+
     figcaption {
         text-align: center;
         color: rgb(150, 150, 150);

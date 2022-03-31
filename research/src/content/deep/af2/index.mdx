@@ -2,11 +2,27 @@
 
 ## Theory
 
+### Attention and Transformers
+
+#### Self attention
+- Compute a weight $w_{qk} = f(x_q, x_k)$.
+  - $k$. for key
+  - $q$. for query
+- $$\dfrac{Q\tr{K}}{\sqrt{d}}$$
+  - $\tr{K}$: `(d, t)`
+  - $d$ is dimension of _keys_ and _queries_ (i.e. the input feature dimension).
+  - $t$ is the sequence length (e.g. sentence length, 512 tokens in BERT).
+  - each row of $K$ (column of $\tr{K}$) is a key
+
+#### Transformers
+- A **transformer** is any model that uses **self-attention** as its primary method of propagating information along the "time" dimension.
+
 ### Graph networks
 - https://arxiv.org/pdf/1806.01261.pdf
 - https://ipam.wistia.com/medias/1zgl4lq6nh
 
 ### SE(3)-Transformers
+- Rotationally equivariant only on the position features (not the other properties).
 
 ### Universal Transformers
 - https://docs.dgl.ai/en/latest/tutorials/models/4_old_wines/7_transformer.html
@@ -15,7 +31,6 @@
 ## Practice
 
 ### Notes on JAX
-
 
 
 ### Code structure
@@ -28,10 +43,13 @@
 ### How does AlphaFold 2 enforce the triangle inequality?
 
 - Triangle attention is included in the pairs representation to help coax the network into considering the adjacent edges when computing the representation for the third edge in a triangle.
-- It is a _soft constraint_.
-
+  - It is a _soft constraint_.
 - Frame aligned point error
 
 ## References
 - http://borisburkov.net/2021-12-25-1/
 - [ColabFold - Making protein folding accessible to all via Google Colab!](https://www.youtube.com/watch?v=Rfw7thgGTwI)
+- Attention and Transformers
+  - [Lecture 12.1: Self-attention](https://www.youtube.com/watch?v=KmAISyVvE1Y)
+  - [Lecture 12.2: Transformers](https://www.youtube.com/watch?v=oUhGZMCTHtI)
+  - [Lecture 12.3: Famous Transfomers (ELMo, BERT, GPT-2, GPT-3)](https://www.youtube.com/watch?v=MN__lSncZBs)

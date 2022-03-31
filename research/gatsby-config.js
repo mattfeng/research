@@ -77,6 +77,7 @@ module.exports = {
             {
               macros: {
                 "\\tr": "#1^\\mathsf{T}",
+                "\\E": "\\mathbb{E}",
               },
             },
           ],
